@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import policy from '../desktop/notification-policy.cjs';
+const {notificationSpec}=policy;
+const event={method:'turn/completed',params:{threadId:'thread',turn:{id:'turn',status:'completed'}}};
+test('desktop notifications are opt-in, hidden while focused, and private by default',()=>{assert.equal(notificationSpec(event,{notifications:false}),null);assert.equal(notificationSpec(event,{notifications:true},{focused:true}),null);const spec=notificationSpec(event,{notifications:true,notificationPreview:false},{threadName:'Private project name'});assert.equal(spec.body,'Open vector.dev to view the conversation.');assert.equal(spec.threadId,'thread');assert.equal(spec.key,'turn');assert.equal(notificationSpec(event,{notifications:true,notificationPreview:true},{threadName:'Opted in title'}).body,'Opted in title');});
+test('approval notifications point to the requesting thread and report failures accurately',()=>{const approval=notificationSpec({method:'item/commandExecution/requestApproval',id:12,params:{threadId:'approval-thread'}},{notifications:true});assert.equal(approval.title,'Codex needs your input');assert.equal(approval.threadId,'approval-thread');assert.equal(approval.key,'request:12');assert.equal(notificationSpec({...event,params:{turn:{status:'failed'}}},{notifications:true}).title,'Codex task failed');});

@@ -1,0 +1,1 @@
+export function VectorMark(){return <svg className="vector-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 8L13 26L27 6M18 6H27V15" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;}

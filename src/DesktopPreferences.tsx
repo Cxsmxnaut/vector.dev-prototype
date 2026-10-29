@@ -1,0 +1,8 @@
+import {useEffect,useState} from 'react';
+import {api} from './api';
+export function DesktopPreferences({onError}:{onError:(s:string)=>void}){
+  const [settings,setSettings]=useState<any>({notifications:false,notificationPreview:false}),[busy,setBusy]=useState(false);const native=/Electron\//.test(navigator.userAgent);
+  useEffect(()=>{api('client-state').then(s=>setSettings(s.settings)).catch(e=>onError(e.message));},[]);
+  async function set(patch:any){setBusy(true);try{const s=await api('client-state',{settings:patch});setSettings(s.settings);}catch(e:any){onError(e.message);}finally{setBusy(false);}}
+  return <section><h3>Desktop notifications</h3><p className="muted">Alerts appear when the Mac app is in the background. Clicking an alert opens its conversation. macOS notification permission is required.</p><label className="setting-row"><div><strong>Task and approval notifications</strong><p>Disabled until you enable them here</p></div><input type="checkbox" aria-label="Enable desktop notifications" checked={settings.notifications} disabled={busy} onChange={e=>set({notifications:e.target.checked})}/></label><label className="setting-row"><div><strong>Show conversation titles</strong><p>Notification content is private by default</p></div><input type="checkbox" aria-label="Show conversation titles in notifications" checked={settings.notificationPreview} disabled={busy||!settings.notifications} onChange={e=>set({notificationPreview:e.target.checked})}/></label><button disabled={!native||!settings.notifications||busy} onClick={()=>api('notifications/test',{}).catch(e=>onError(e.message))}>Send test notification</button>{!native&&<p className="muted">Open the standalone Mac app to receive and test native notifications.</p>}</section>;
+}

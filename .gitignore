@@ -1,0 +1,17 @@
+node_modules/
+dist/
+release/
+.runtime/
+.DS_Store
+evidence/
+*.log
+protocol/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+auth.json
+client-state.json
+connection.json
+backups/
