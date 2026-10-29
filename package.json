@@ -12,6 +12,7 @@
     "build": "tsc --noEmit && vite build",
     "desktop": "npm run build && electron .",
     "package:mac": "npm run build && electron-packager . 'vector.dev' --app-bundle-id=dev.vector.desktop --platform=darwin --arch=arm64 --icon=assets/Vector.icns --out=release --overwrite --ignore='^/(protocol|test|release|.runtime|src|evidence|.git)(/|$)'",
+    "release:mac": "npm run package:mac && node scripts/package-release.mjs",
     "test": "node --test test/*.test.mjs",
     "verify:live": "node scripts/verify-live.mjs",
     "protocol:update": "node scripts/update-protocol.mjs"

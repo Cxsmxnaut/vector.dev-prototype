@@ -22,15 +22,21 @@ To start the server directly, use `npm start`. The default address is `127.0.0.1
 
 ## Mac application
 
+Download the Apple Silicon DMG or ZIP from [GitHub Releases](https://github.com/Cxsmxnaut/vector.dev/releases). Requires macOS 13 or newer, a compatible installed Codex executable, and an existing Codex sign-in. Drag the application from the DMG into Applications.
+
+Release builds are ad-hoc signed for integrity, but are not Developer ID signed or Apple-notarized. macOS may block them. Automatic updates are not included. These are development prereleases; review the limitations in [PARITY.md](PARITY.md).
+
 ```sh
 npm run desktop
-# Build an unsigned Apple Silicon app:
+# Build an Apple Silicon app:
 npm run package:mac
+# Create an ad-hoc signed app, DMG, ZIP, and SHA256SUMS:
+npm run release:mac
 ```
 
 The packaged application is `release/vector.dev-darwin-arm64/vector.dev.app`. Closing its window hides it while local work continues. Use **vector.dev → Quit** to stop the application and backend. Reopen its Dock icon to return to the window.
 
-This builds an unsigned `.app` bundle. A DMG installer, notarization, and automatic updates are not included.
+Release artifacts are written to `release/`. To verify downloads, place `SHA256SUMS` beside the DMG and ZIP and run `shasum -a 256 -c SHA256SUMS`.
 
 ## Features
 
